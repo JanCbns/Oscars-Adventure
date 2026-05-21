@@ -390,7 +390,7 @@ public class BattleScene extends JPanel {
         g2.setStroke(new BasicStroke(1f));
     }
 
-    // ─── Game Over overlay ────────────────────────────────────────────────
+    // ─── Game Over overlay or pop up  ────────────────────────────────────────────────
     private void drawGameOverOverlay(Graphics2D g2, int W, int H) {
         g2.setColor(new Color(0, 0, 0, 140));
         g2.fillRect(0, 0, W, H);
