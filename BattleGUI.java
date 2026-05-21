@@ -8,13 +8,13 @@ import java.util.Random;
  * BattleGUI — Pokémon-style turn-based battle interface.
  *
  * Layout (top-to-bottom):
- *   ┌────────────────────────────────────┐
- *   │         BattleScene (288px)        │  ← sprites + HP/MP info boxes
- *   ├────────────────────────────────────┤
- *   │      Dialog box  (~80px)           │  ← scrolling battle text
- *   ├────────────────────────────────────┤
- *   │      Action panel  (~96px)         │  ← context-sensitive buttons
- *   └────────────────────────────────────┘
+ *   ┌────────────────────────────────────────────────────┐
+ *   │         BattleScene (288px)                        │  ← sprites + HP/MP info boxes
+ *   ├────────────────────────────────────────────────────┤
+ *   │      Dialog box  (~80px)                           │  ← scrolling battle text
+ *   ├────────────────────────────────────────────────────┤
+ *   │      Action panel  (~96px)                         │  ← context-sensitive buttons
+ *   └────────────────────────────────────────────────────┘
  */
 public class BattleGUI extends JFrame {
 
@@ -36,6 +36,7 @@ public class BattleGUI extends JFrame {
     private Enemy  currentEnemy;
     private boolean bossFight = false;
     private int     roundCounter  = 0;
+    private boolean isFullscreen = false;
 
     // ── UI components ─────────────────────────────────────────────
     private BattleScene scene;
@@ -115,7 +116,12 @@ public class BattleGUI extends JFrame {
 
         add(actionPanel, BorderLayout.SOUTH);
 
-        pack();
+        // ── Setup fullscreen toggle with F11 key ─────────────────
+        setupFullscreenToggle();
+
+        // Set to fullscreen by default
+        setMaximizedFullscreen();
+
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -130,6 +136,108 @@ public class BattleGUI extends JFrame {
         // ── Kick off ─────────────────────────────────────────────
         AudioManager.playMusic("sounds/Soundtrack.wav");
         showWorldMap();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  Fullscreen methods
+    // ═══════════════════════════════════════════════════════════════
+    
+    /**
+     * Setup F11 key to toggle fullscreen mode
+     */
+    private void setupFullscreenToggle() {
+        KeyStroke f11Key = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(f11Key, "toggleFullscreen");
+        getRootPane().getActionMap().put("toggleFullscreen", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleFullscreen();
+            }
+        });
+
+        // Also add Escape key to exit fullscreen
+        KeyStroke escapeKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKey, "exitFullscreen");
+        getRootPane().getActionMap().put("exitFullscreen", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isFullscreen) {
+                    exitFullscreen();
+                }
+            }
+        });
+    }
+
+    /**
+     * Toggle between fullscreen and windowed mode
+     */
+    private void toggleFullscreen() {
+        if (isFullscreen) {
+            exitFullscreen();
+        } else {
+            setMaximizedFullscreen();
+        }
+    }
+
+    /**
+     * Set the window to maximized borderless fullscreen
+     */
+    private void setMaximizedFullscreen() {
+        dispose();
+        setUndecorated(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        isFullscreen = true;
+        setVisible(true);
+    }
+
+    /**
+     * Exit fullscreen and return to windowed mode
+     */
+    private void exitFullscreen() {
+        dispose();
+        setUndecorated(false);
+        setExtendedState(JFrame.NORMAL);
+        setSize(800, 600); // Default windowed size
+        isFullscreen = false;
+        setVisible(true);
+    }
+
+    /**
+     * Set true exclusive fullscreen mode (better performance for games)
+     */
+    private void setExclusiveFullscreen() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        
+        if (gd.isFullScreenSupported()) {
+            dispose();
+            setUndecorated(true);
+            setResizable(false);
+            gd.setFullScreenWindow(this);
+            isFullscreen = true;
+            setVisible(true);
+        } else {
+            // Fallback to maximized window
+            setMaximizedFullscreen();
+        }
+    }
+
+    /**
+     * Exit exclusive fullscreen mode
+     */
+    private void exitExclusiveFullscreen() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        
+        if (gd.getFullScreenWindow() != null) {
+            gd.setFullScreenWindow(null);
+            dispose();
+            setUndecorated(false);
+            setResizable(true);
+            setSize(800, 600);
+            isFullscreen = false;
+            setVisible(true);
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
