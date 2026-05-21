@@ -703,7 +703,7 @@ public class BattleGUI extends JFrame {
     }
 
     // ═══════════════════════════════════════════════════════════════
-    //  Accessors for BattleScene
+    //  Accessors for BattleScenes
     // ═══════════════════════════════════════════════════════════════
     public Player    getPlayer()       { return player; }
     public Enemy     getCurrentEnemy() { return currentEnemy; }
