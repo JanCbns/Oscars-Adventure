@@ -503,7 +503,7 @@ public class BattleGUI extends JFrame {
 
     if (currentEnemy == null || currentEnemy.getHp() <= 0) return;
 
-    AudioManager.playSound("sounds/enemy.wav");
+    AudioManager.playSound("sounds/Attacks.wav");
 
     String msg = currentEnemy.getAttackMessage(player);
 
