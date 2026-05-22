@@ -14,7 +14,7 @@ The loop continues until the player's HP reaches zero. To survive, players must 
 <img width="1051" height="885" alt="Use case diagram" src="https://github.com/user-attachments/assets/a58a23cc-80b0-46c5-8f77-fd16acb40a92" />
 
 5. Progess Photos:
-<img width="1919" height="1079" alt="titlescreen" src="https://github.com/user-attachments/assets/3a51cd53-d0b5-4bdd-96b7-7abbbf1e5227" />
+<img width="1919" height="1079" alt="titlescreen" src="https://github.com/user-attachments/assets/7d0c37db-48f7-4931-b208-0eb26382bb11" />
 <img width="1919" height="1079" alt="Screenshot 2026-05-23 024833" src="https://github.com/user-attachments/assets/3636362f-e9c3-4296-991b-8456976820df" />
 <img width="1919" height="1079" alt="Screenshot 2026-05-23 024846" src="https://github.com/user-attachments/assets/5dd5ea72-0f61-4aef-b086-016c98b42903" />
 <img width="1915" height="1079" alt="Screenshot 2026-05-23 024853" src="https://github.com/user-attachments/assets/91150727-907f-48fb-b5af-0e308c58b721" />
